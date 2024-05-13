@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/go_tdd/http-server/server"
+	"github.com/meteedev/go_tdd/http-server/server"
 )
 
 func main(){

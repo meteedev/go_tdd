@@ -1,4 +1,4 @@
-module github.com/go_tdd/interface
+module github.com/meteedev/go_tdd
 
 go 1.22.1
 
