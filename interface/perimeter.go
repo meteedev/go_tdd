@@ -36,3 +36,7 @@ func (r Rectangle) Area() (area float64) {
 func (c Circle) Area() (area float64) {
 	return math.Pi * c.Radius * c.Radius
 }
+
+func main(){
+	fmt.Println(" interface polymorp interface test")
+}
