@@ -10,24 +10,26 @@ import (
 )
 
 func TestGetPlayers(t *testing.T) {
-
-	req, err := http.NewRequest(http.MethodGet, "/players", nil)
+	req, err := NewGetRequestScore("A")
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-
 	res := httptest.NewRecorder()
+	
 	PlayerServer(res, req)
 
 	t.Run("returns Mr A 's score", func(t *testing.T) {
-		request, _ := http.NewRequest(http.MethodGet, "/players/A", nil)
-		response := httptest.NewRecorder()
+		req, err := NewGetRequestScore("A")
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		res := httptest.NewRecorder()
 	
-		PlayerServer(response, request)
+		PlayerServer(res, req)
 	
-		got := response.Body.String()
+		got := res.Body.String()
 		want := "20"
-	
+		
 		assert.Equal(t,want,got)
 	})
 
@@ -47,3 +49,16 @@ func TestGetPlayers(t *testing.T) {
 	})
 
 }
+
+
+func NewGetRequestScore(name string)(*http.Request,error){
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("/players/%s", name), nil)
+	if err != nil {
+		fmt.Println(err.Error())
+		return nil , err
+	}
+	return req,nil
+}
+
+
+
