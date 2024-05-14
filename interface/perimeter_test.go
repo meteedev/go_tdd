@@ -70,4 +70,3 @@ func TestAreaPolymorp(t *testing.T) {
 	}
 
 }
-

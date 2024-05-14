@@ -4,14 +4,17 @@ type PlayerStore interface {
 	GetPlayerScore(name string) int
 }
 
-func GetPlayerScore(name string)(score int){
-	if name == "A" {
-		return	20
-	}
+type InMemoryPlayerStore struct {
+}
 
-	if name == "B" {
-		return 10
-	}
+func (InMemoryPlayerStore) GetPlayerScore(name string) (score int) {
+	// if name == "A" {
+	// 	return	20
+	// }
 
-	return 
+	// if name == "B" {
+	// 	return 10
+	// }
+
+	return 123
 }
