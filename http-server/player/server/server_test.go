@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"fmt"
 
 	"github.com/stretchr/testify/assert"
 )
