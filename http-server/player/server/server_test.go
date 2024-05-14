@@ -72,10 +72,32 @@ func TestGetPlayers(t *testing.T) {
 
 		got := res.Code
 		want := http.StatusNotFound
-		
-		assert.Equal(t,want,got)
+
+		assert.Equal(t, want, got)
 	})
 
+}
+
+func TestStoreScore(t *testing.T) {
+	store := StubPlayerStore{
+		map[string]int{},
+	}
+	server := &PlayerServer{&store}
+
+	t.Run("it returns accepted on POST", func(t *testing.T) {
+		req, err := http.NewRequest(http.MethodPost, "/players/D", nil)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		res := httptest.NewRecorder()
+
+		server.ServeHTTP(res, req)
+
+		got := res.Code
+		want := http.StatusAccepted
+
+		assert.Equal(t, want, got)
+	})
 }
 
 func NewGetRequestScore(name string) (*http.Request, error) {
