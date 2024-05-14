@@ -4,10 +4,10 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/meteedev/go_tdd/http-server/server"
+	"github.com/meteedev/go_tdd/http-server/player/server"
 )
 
 func main(){
-	handler := http.HandlerFunc(server.PlayerServer)
-	log.Fatal(http.ListenAndServe(":5000",handler))
+	server := &server.PlayerServer{}
+	log.Fatal(http.ListenAndServe(":5000",server))
 }
