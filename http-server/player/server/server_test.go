@@ -1,7 +1,6 @@
 package server
 
 import (
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -9,15 +8,30 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGetPlayers(t *testing.T) {
-	req, err := NewGetRequestScore("A")
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	res := httptest.NewRecorder()
-	
-	PlayerServer(res, req)
 
+//server_test.go
+type StubPlayerStore struct {
+	scores map[string]int
+}
+
+func (s *StubPlayerStore) GetPlayerScore(name string) int {
+	//fmt.Println("in stub")
+	score := s.scores[name]
+	return score
+}
+
+
+func TestGetPlayers(t *testing.T) {
+	
+	store := StubPlayerStore{
+		map[string]int{
+			"A": 20,
+			"B":  10,
+		},
+	}
+
+	//init server
+	server := &PlayerServer{store: &store}
 	t.Run("returns Mr A 's score", func(t *testing.T) {
 		req, err := NewGetRequestScore("A")
 		if err != nil {
@@ -25,7 +39,7 @@ func TestGetPlayers(t *testing.T) {
 		}
 		res := httptest.NewRecorder()
 	
-		PlayerServer(res, req)
+		server.ServeHTTP(res,req)
 	
 		got := res.Body.String()
 		want := "20"
@@ -36,16 +50,18 @@ func TestGetPlayers(t *testing.T) {
 
 
 	t.Run("returns B's score", func(t *testing.T) {
-		request, _ := http.NewRequest(http.MethodGet, "/players/B", nil)
-		response := httptest.NewRecorder()
+		req, err := http.NewRequest(http.MethodGet, "/players/B", nil)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		res := httptest.NewRecorder()
 	
-		PlayerServer(response, request)
+		server.ServeHTTP(res,req)
 	
-		got := response.Body.String()
+		got := res.Body.String()
 		want := "10"
 	
 		assert.Equal(t,want,got)
-
 	})
 
 }
