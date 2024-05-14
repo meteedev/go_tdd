@@ -13,17 +13,37 @@ func TestGetPlayers(t *testing.T) {
 
 	req, err := http.NewRequest(http.MethodGet, "/players", nil)
 	if err != nil {
-		fmt.Errorf(err.Error())
+		fmt.Println(err.Error())
 	}
 
 	res := httptest.NewRecorder()
 	PlayerServer(res, req)
 
-	t.Run("get player scoere", func(t *testing.T) {
-		got := res.Body.String()
+	t.Run("returns Mr A 's score", func(t *testing.T) {
+		request, _ := http.NewRequest(http.MethodGet, "/players/A", nil)
+		response := httptest.NewRecorder()
+	
+		PlayerServer(response, request)
+	
+		got := response.Body.String()
+		want := "20"
+	
+		assert.Equal(t,want,got)
+	})
 
-		expect := "80"
-		assert.Equal(t, expect, got)
+
+
+	t.Run("returns B's score", func(t *testing.T) {
+		request, _ := http.NewRequest(http.MethodGet, "/players/B", nil)
+		response := httptest.NewRecorder()
+	
+		PlayerServer(response, request)
+	
+		got := response.Body.String()
+		want := "10"
+	
+		assert.Equal(t,want,got)
+
 	})
 
 }
